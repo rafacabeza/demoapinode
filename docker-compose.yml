@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:18
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=development
+    command: ["sh", "-c", "npm install && node app.js"]
+
+  db:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: demo
+    volumes:
+      - apidb:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  apidb:
